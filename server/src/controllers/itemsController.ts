@@ -15,9 +15,7 @@ class itemsController{
          };
       });
 
-      return response.json({
-         serializedItems
-      });
+      return response.json(serializedItems);
    };
 }
 export default itemsController;
