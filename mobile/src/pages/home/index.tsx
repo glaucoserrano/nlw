@@ -15,15 +15,15 @@ const Home = () => {
       nome: string;
    }
    const navigation = useNavigation();
-   const [UF,SetUF] = useState('');
+   const [uf,SetUF] = useState('');
    const [city,SetCity] = useState('');
    const[ufs, setUfs] = useState<string[]>([]);
    const[cities,setCities] = useState<string[]>([]);
    
    function handleNavigatetoPoints(){
       navigation.navigate('Point',{
-         UF:"SP",
-         city:"Bauru",
+         uf,
+         city,
       });
    }
    useEffect(()=> {
@@ -35,23 +35,22 @@ const Home = () => {
    });
     /* CArregar Cidades*/
     useEffect(() => {
-      if (UF==='null'){
+      if (uf==='null'){
          return;
       }
 
-      axios.get<IBGECityResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${UF}/municipios?orderBy=nome`).then(response=>{
+      axios.get<IBGECityResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`).then(response=>{
          const cityNames = response.data.map(city=> city.nome);
          setCities(cityNames);
       });
    });
 
-   function handleSelectUF(UF:string){
-      SetUF(UF);
-      console.log(UF);
+   function handleSelectUF(uf:string){
+      SetUF(uf);
+      
    }
    function handleSelectCity(city : string){
       SetCity(city);
-      console.log(city);
    }
    return(       
       <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? 'padding' : undefined}>
@@ -70,7 +69,7 @@ const Home = () => {
             <View style={styles.footer}>
                <RNPickerSelect
                   onValueChange={(value) => handleSelectUF(value)}
-                  value={UF}
+                  value={uf}
                   items={ufs.map((uf) => ({ key: uf, label: uf, value: uf }))}
                />
                <RNPickerSelect
