@@ -1,13 +1,18 @@
-import React, {useEffect,useState,ChangeEvent} from 'react';
-import { StyleSheet, View, Image,Text, ImageBackground,TextInput,KeyboardAvoidingView,Platform,Picker} from 'react-native';
+import React, {useEffect,useState} from 'react';
+import { StyleSheet, View, Image,Text, ImageBackground} from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
 import {Feather as Icon} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
 import RNPickerSelect  from 'react-native-picker-select';
 import axios from 'axios';
 
-const Home = () => {
+if(__DEV__) {
+   require('react-devtools')
+}
 
+<script src="http://169.254.238.132:8097"></script>
+const Home = () => {
+   
    interface IBGEUFResponse{
       sigla: string;
    }
@@ -15,15 +20,15 @@ const Home = () => {
       nome: string;
    }
    const navigation = useNavigation();
-   const [uf,SetUF] = useState('');
-   const [city,SetCity] = useState('');
+   const [uf,setUF] = useState('');
+   const [city,setCity] = useState('');
    const[ufs, setUfs] = useState<string[]>([]);
    const[cities,setCities] = useState<string[]>([]);
    
    function handleNavigatetoPoints(){
       navigation.navigate('Point',{
-         uf,
-         city,
+         uf:'SP',
+         city:'Bauru',
       });
    }
    useEffect(()=> {
@@ -35,7 +40,7 @@ const Home = () => {
    });
     /* CArregar Cidades*/
     useEffect(() => {
-      if (uf==='null'){
+      if (uf===null){
          return;
       }
 
@@ -46,48 +51,48 @@ const Home = () => {
    });
 
    function handleSelectUF(uf:string){
-      SetUF(uf);
+      setUF(uf);
       
    }
    function handleSelectCity(city : string){
-      SetCity(city);
+      setCity(city);
    }
    return(       
-      <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? 'padding' : undefined}>
-         <ImageBackground 
-         source={require('../../assets/home-background.png')} 
-         style={styles.container}
-         imageStyle={{width: 274 , height: 368}}
-         >
-            <View style={styles.main}>
-               <Image source={require('../../assets/logo.png')} />
-               <View>
-                  <Text  style={styles.title}>Seu MarketPlace de coleta de Resíduos</Text >
-                  <Text  style={styles.description}>Ajudamos pessoas a encontrarem pontos de coleta de forma eficiente.</Text >
-               </View>
+   
+      <ImageBackground 
+      source={require('../../assets/home-background.png')} 
+      style={styles.container}
+      imageStyle={{width: 274 , height: 368}}
+      >
+         <View style={styles.main}>
+            <Image source={require('../../assets/logo.png')} />
+            <View>
+               <Text  style={styles.title}>Seu MarketPlace de coleta de Resíduos</Text >
+               <Text  style={styles.description}>Ajudamos pessoas a encontrarem pontos de coleta de forma eficiente.</Text >
             </View>
-            <View style={styles.footer}>
-               <RNPickerSelect
-                  onValueChange={(value) => handleSelectUF(value)}
-                  value={uf}
-                  items={ufs.map((uf) => ({ key: uf, label: uf, value: uf }))}
-               />
-               <RNPickerSelect
-                  onValueChange={(value) => handleSelectCity(value)}
-                  value={city}
-                  items={cities.map((city) => ({ key: city, label: city, value: city }))}
-               />
-               <RectButton style={styles.button} onPress={handleNavigatetoPoints}> 
-                  <View style={styles.buttonIcon}>
-                     <Text> 
-                        <Icon name="arrow-right" color="#FFF" size={24} /> 
-                     </Text>
-                  </View> 
-                  <Text style={styles.buttonText} >Entrar </Text>
-               </RectButton>
-            </View>
-         </ImageBackground>
-      </KeyboardAvoidingView>
+         </View>
+         <View style={styles.footer}>
+            <RNPickerSelect
+               onValueChange={(value) => handleSelectUF(value)}
+               value={uf}
+               items={ufs.map((uf) => ({ key: uf, label: uf, value: uf }))}
+            />
+            <RNPickerSelect
+               onValueChange={(value) => handleSelectCity(value)}
+               value={city}
+               items={cities.map((city) => ({ key: city, label: city, value: city }))}
+            />
+            <RectButton style={styles.button} onPress={handleNavigatetoPoints}> 
+               <View style={styles.buttonIcon}>
+                  <Text> 
+                     <Icon name="arrow-right" color="#FFF" size={24} /> 
+                  </Text>
+               </View> 
+               <Text style={styles.buttonText} >Entrar </Text>
+            </RectButton>
+         </View>
+      </ImageBackground>
+   
    );
 }
 
